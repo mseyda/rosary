@@ -15,7 +15,9 @@
   "6": {
     "images": [
       "https://raw.githubusercontent.com/mseyda/rosary/master/images/6_0.jpg",
-      "https://raw.githubusercontent.com/mseyda/rosary/master/images/6_1.jpg"
+      "https://raw.githubusercontent.com/mseyda/rosary/master/images/6_1.jpg",
+      null,
+      "https://raw.githubusercontent.com/mseyda/rosary/master/images/6_3.jpg"
     ],
     "video": null
   },
