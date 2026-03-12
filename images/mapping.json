@@ -138,7 +138,10 @@
   "43": {
     "images": [
       "https://raw.githubusercontent.com/mseyda/rosary/master/images/43_0.jpg",
-      "https://raw.githubusercontent.com/mseyda/rosary/master/images/43_1.jpg"
+      "https://raw.githubusercontent.com/mseyda/rosary/master/images/43_1.jpg",
+      null,
+      null,
+      "https://raw.githubusercontent.com/mseyda/rosary/master/images/43_4.jpg"
     ],
     "video": null
   },
