@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tespih Koleksiyonu — Seyda</title>
+  <meta name="description" content="Seyda'nın özel tespih koleksiyonu">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="container">
+      <div class="header-inner">
+        <div>
+          <div class="brand-label">seyda.me / rosary</div>
+          <h1 class="brand-title">Tespih Koleksiyonu</h1>
+        </div>
+        <div class="header-stats" id="header-stats"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main ───────────────────────────────────────── -->
+  <main>
+    <div class="container">
+
+      <!-- Controls -->
+      <div class="controls-bar">
+        <div class="search-wrap">
+          <input type="search" id="search-input" placeholder="Usta, hammadde veya renk ara…" autocomplete="off">
+        </div>
+        <div class="filters">
+          <select id="filter-material"></select>
+          <select id="filter-color"></select>
+          <select id="filter-maker"></select>
+          <select id="sort-by">
+            <option value="date-desc">Yeniden Eskiye</option>
+            <option value="date-asc">Eskiden Yeniye</option>
+            <option value="value-desc">Değer ↓</option>
+            <option value="value-asc">Değer ↑</option>
+            <option value="weight-desc">Ağırlık ↓</option>
+            <option value="weight-asc">Ağırlık ↑</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Collection Label -->
+      <div class="section-label">
+        <span id="collection-count"></span>
+      </div>
+
+      <!-- Collection Grid -->
+      <div class="rosary-grid" id="rosary-grid"></div>
+
+      <!-- Archive Section -->
+      <div class="archive-section">
+        <div class="archive-toggle" id="archive-toggle">
+          <h2 class="archive-title">Arşiv</h2>
+          <span class="archive-desc">Hediye edilen tespihler</span>
+          <span class="archive-chevron">▼</span>
+        </div>
+        <div class="archive-cards" id="archive-cards" style="display:none"></div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ── Detail Modal ───────────────────────────────── -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="rosary-modal">
+      <button class="modal-close" id="modal-close" aria-label="Kapat">✕</button>
+      <div class="modal-color-bar" id="modal-color-bar"></div>
+      <div class="modal-body">
+
+        <!-- Left: Image -->
+        <div class="modal-image-section">
+          <div class="modal-image-wrap" id="modal-image-wrap">
+            <img id="modal-img" src="" alt="" style="display:none">
+            <div class="modal-img-placeholder" id="modal-img-placeholder">
+              <span class="icon">📿</span>
+              <span class="lbl">Görsel eklenmemiş</span>
+            </div>
+          </div>
+          <div class="modal-image-actions">
+            <button class="btn-upload" id="btn-upload">📷 Görsel Ekle</button>
+            <button class="btn-remove-img" id="btn-remove-img" style="display:none">Kaldır</button>
+          </div>
+          <input type="file" id="image-input" accept="image/*" hidden>
+        </div>
+
+        <!-- Right: Details -->
+        <div class="modal-details-section">
+          <div id="modal-header"></div>
+          <table class="details-table" id="details-table"></table>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────── -->
+  <footer class="site-footer">
+    seyda.me &nbsp;·&nbsp; Tespih Koleksiyonu
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
