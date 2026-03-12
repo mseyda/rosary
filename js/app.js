@@ -36,24 +36,93 @@ function formatDate(serial) {
 }
 
 /* ── Image Storage ─────────────────────────────────── */
-const IMG_PREFIX = 'rosary_img_';
+const IMG_PREFIX  = 'rosary_img_';
+const API_URL     = '/.netlify/functions/rosary-image';
+let   cloudImages = {};  // rosaryId → URL (loaded on init)
 
-function saveImage(id, dataUrl) {
+// Compress image via canvas (max 1200px, 85% JPEG)
+function compressImage(dataUrl) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 1200;
+      let { width: w, height: h } = img;
+      if (w > MAX) { h = Math.round(h * MAX / w); w = MAX; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', 0.85));
+    };
+    img.onerror = () => resolve(dataUrl); // fallback: use original
+    img.src = dataUrl;
+  });
+}
+
+// Save to localStorage (local cache)
+function saveImageLocal(id, dataUrl) {
+  try { localStorage.setItem(IMG_PREFIX + id, dataUrl); } catch(e) {}
+}
+
+// Upload to cloud (GitHub via Netlify Function)
+async function uploadImageCloud(id, dataUrl) {
   try {
-    localStorage.setItem(IMG_PREFIX + id, dataUrl);
-    return true;
-  } catch (e) {
-    alert('Görsel kaydedilemedi. Tarayıcı depolama alanı dolu olabilir.');
-    return false;
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        adminPassword: Auth.getPlaintext(),
+        rosaryId: String(id),
+        imageBase64: dataUrl,
+      }),
+    });
+    const json = await res.json();
+    if (res.ok && json.ok) {
+      cloudImages[id] = json.url;
+      return json.url;
+    }
+    console.warn('Cloud upload failed:', json.error);
+  } catch(e) {
+    console.warn('Cloud upload error:', e.message);
   }
+  return null;
 }
 
+// Delete from cloud
+async function deleteImageCloud(id) {
+  try {
+    await fetch(API_URL, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        adminPassword: Auth.getPlaintext(),
+        rosaryId: String(id),
+      }),
+    });
+    delete cloudImages[id];
+  } catch(e) {}
+}
+
+// Load image: cloud first (cross-device), then local cache
 function loadImage(id) {
-  return localStorage.getItem(IMG_PREFIX + id) || null;
+  return cloudImages[id] || localStorage.getItem(IMG_PREFIX + id) || null;
 }
 
+// Remove image everywhere
 function removeImage(id) {
   localStorage.removeItem(IMG_PREFIX + id);
+  deleteImageCloud(id);
+}
+
+// On init: fetch cloud image map (one request for all images)
+async function loadCloudImages() {
+  try {
+    const res = await fetch(API_URL);
+    if (res.ok) {
+      cloudImages = await res.json();
+      renderCollection();
+      renderArchive();
+    }
+  } catch(e) {}
 }
 
 /* ── Data Edits Storage ────────────────────────────── */
@@ -500,20 +569,41 @@ function closeModal() {
 }
 
 /* ── Image Upload ──────────────────────────────────── */
-function handleImageUpload(file) {
+async function handleImageUpload(file) {
   if (!file || !state.activeItem || !Auth.isAdmin()) return;
+
   const reader = new FileReader();
-  reader.onload = (e) => {
-    const dataUrl = e.target.result;
-    if (saveImage(state.activeItem.id, dataUrl)) {
+  reader.onload = async (e) => {
+    const btnUpload = document.getElementById('btn-upload');
+    btnUpload.textContent = '⏳ Yükleniyor…';
+    btnUpload.disabled = true;
+
+    try {
+      const compressed = await compressImage(e.target.result);
+
+      // Try cloud upload first
+      const cloudUrl = await uploadImageCloud(state.activeItem.id, compressed);
+
+      // Always save locally as cache
+      saveImageLocal(state.activeItem.id, compressed);
+
+      const displayUrl = cloudUrl || compressed;
       const imgEl       = document.getElementById('modal-img');
       const placeholder = document.getElementById('modal-img-placeholder');
-      imgEl.src         = dataUrl;
+      imgEl.src         = displayUrl;
       imgEl.style.display = 'block';
       placeholder.style.display = 'none';
       document.getElementById('btn-remove-img').style.display = 'inline-block';
+
+      if (!cloudUrl) {
+        console.warn('Cloud upload failed — image saved locally only (not cross-device).');
+      }
+
       renderCollection();
       renderArchive();
+    } finally {
+      btnUpload.textContent = '📷 Görsel Ekle';
+      btnUpload.disabled = false;
     }
   };
   reader.readAsDataURL(file);
@@ -617,6 +707,7 @@ function init() {
   renderArchive();
   updateAdminUI();
   initEvents();
+  loadCloudImages(); // async, re-renders when done
 }
 
 document.addEventListener('DOMContentLoaded', init);

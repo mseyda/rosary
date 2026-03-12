@@ -1,8 +1,8 @@
 const Auth = (() => {
   const HASH_KEY    = 'rosary_admin_hash';
   const SESSION_KEY = 'rosary_admin';
+  const PW_KEY      = 'rosary_admin_pw';
 
-  // Synchronous hash (no async/await, no Web Crypto API)
   function hash(str) {
     const salt = 'rsr_seyda_2024';
     const s = str + salt;
@@ -19,16 +19,21 @@ const Auth = (() => {
     return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(16).padStart(16, '0');
   }
 
-  function lsGet(k)      { try { return localStorage.getItem(k); }   catch(e) { return null; } }
-  function lsSet(k, v)   { try { localStorage.setItem(k, v); return true; } catch(e) { return false; } }
-  function ssGet(k)      { try { return sessionStorage.getItem(k); } catch(e) { return null; } }
-  function ssSet(k, v)   { try { sessionStorage.setItem(k, v); }     catch(e) {} }
-  function ssRemove(k)   { try { sessionStorage.removeItem(k); }     catch(e) {} }
+  function lsGet(k)    { try { return localStorage.getItem(k); }   catch(e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); return true; } catch(e) { return false; } }
+  function ssGet(k)    { try { return sessionStorage.getItem(k); } catch(e) { return null; } }
+  function ssSet(k, v) { try { sessionStorage.setItem(k, v); }     catch(e) {} }
+  function ssRm(k)     { try { sessionStorage.removeItem(k); }     catch(e) {} }
 
   return {
-    isSetup()  { return !!lsGet(HASH_KEY); },
-    isAdmin()  { return ssGet(SESSION_KEY) === '1'; },
-    logout()   { ssRemove(SESSION_KEY); },
+    isSetup()      { return !!lsGet(HASH_KEY); },
+    isAdmin()      { return ssGet(SESSION_KEY) === '1'; },
+    getPlaintext() { return ssGet(PW_KEY) || ''; },
+
+    logout() {
+      ssRm(SESSION_KEY);
+      ssRm(PW_KEY);
+    },
 
     setup(pw) {
       if (!pw || pw.length < 6)
@@ -36,6 +41,7 @@ const Auth = (() => {
       if (!lsSet(HASH_KEY, hash(pw)))
         return { ok: false, msg: 'Tarayıcı depolama alanı kullanılamıyor. Gizli sekmeyi kapatıp tekrar deneyin.' };
       ssSet(SESSION_KEY, '1');
+      ssSet(PW_KEY, pw);
       return { ok: true };
     },
 
@@ -44,15 +50,17 @@ const Auth = (() => {
       if (!stored) return { ok: false, msg: 'Önce şifre belirleyin.' };
       if (hash(pw) !== stored) return { ok: false, msg: 'Şifre yanlış.' };
       ssSet(SESSION_KEY, '1');
+      ssSet(PW_KEY, pw);
       return { ok: true };
     },
 
     changePassword(oldPw, newPw) {
       const stored = lsGet(HASH_KEY);
-      if (!stored)                   return { ok: false, msg: 'Şifre ayarlanmamış.' };
-      if (hash(oldPw) !== stored)    return { ok: false, msg: 'Mevcut şifre yanlış.' };
+      if (!stored)                    return { ok: false, msg: 'Şifre ayarlanmamış.' };
+      if (hash(oldPw) !== stored)     return { ok: false, msg: 'Mevcut şifre yanlış.' };
       if (!newPw || newPw.length < 6) return { ok: false, msg: 'Yeni şifre en az 6 karakter olmalı.' };
       lsSet(HASH_KEY, hash(newPw));
+      ssSet(PW_KEY, newPw);
       return { ok: true };
     },
   };
