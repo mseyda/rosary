@@ -154,43 +154,32 @@ function closeAuthModal() {
   document.getElementById('auth-modal-overlay').classList.remove('open');
 }
 
-async function handleAuthSubmit() {
+function handleAuthSubmit() {
   const pw  = document.getElementById('auth-password').value;
   const err = document.getElementById('auth-error');
 
   if (Auth.isAdmin()) {
-    // Logout
     Auth.logout();
     closeAuthModal();
     updateAdminUI();
     return;
   }
 
-  if (!Auth.isSetup()) {
-    const res = await Auth.setup(pw);
-    if (res.ok) {
-      closeAuthModal();
-      updateAdminUI();
-    } else {
-      err.textContent = res.msg;
-    }
+  const res = Auth.isSetup() ? Auth.login(pw) : Auth.setup(pw);
+  if (res.ok) {
+    closeAuthModal();
+    updateAdminUI();
   } else {
-    const res = await Auth.login(pw);
-    if (res.ok) {
-      closeAuthModal();
-      updateAdminUI();
-    } else {
-      err.textContent = res.msg;
-    }
+    err.textContent = res.msg;
   }
 }
 
-async function handleChangePassword() {
+function handleChangePassword() {
   const oldPw = document.getElementById('change-old-pw').value;
   const newPw = document.getElementById('change-new-pw').value;
   const err   = document.getElementById('change-pw-error');
 
-  const res = await Auth.changePassword(oldPw, newPw);
+  const res = Auth.changePassword(oldPw, newPw);
   if (res.ok) {
     err.style.color = '#6ee7b7';
     err.textContent = 'Şifre değiştirildi.';
