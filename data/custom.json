@@ -90,6 +90,24 @@
       "dateSerial": 46091,
       "seller": "koleksiyon12345",
       "id": "c_1773412920670"
+    },
+    {
+      "maker": "Abdullah Darabacı",
+      "material": "Katalin",
+      "shape": "Fıçı",
+      "count": 33,
+      "ua": "A",
+      "style": "D",
+      "color": "Turuncu",
+      "width": 9,
+      "length": 12,
+      "weight": null,
+      "density": null,
+      "valueTRY": 450,
+      "valueEUR": 9,
+      "dateSerial": 46091,
+      "seller": "Koleksiyon12345",
+      "id": "c_1773413053048"
     }
   ],
   "archived": [
