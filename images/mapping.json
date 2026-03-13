@@ -629,5 +629,11 @@
       null
     ],
     "video": null
+  },
+  "A4": {
+    "images": [
+      "https://raw.githubusercontent.com/mseyda/rosary/master/images/A4_0.jpg"
+    ],
+    "video": null
   }
 }
