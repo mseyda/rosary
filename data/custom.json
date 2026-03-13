@@ -75,10 +75,11 @@
     }
   ],
   "archived": [
-    "23",
+    "23"
+  ],
+  "unarchived": [
     "50"
   ],
-  "unarchived": [],
   "edits": {
     "5": {
       "material": "Bakalit"
