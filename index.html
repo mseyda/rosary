@@ -55,9 +55,10 @@
         </div>
       </div>
 
-      <!-- Collection Label -->
+      <!-- Collection Label + Add button -->
       <div class="section-label">
         <span id="collection-count"></span>
+        <button class="btn-add-rosary" id="btn-add-rosary" style="display:none">+ Yeni Tespih</button>
       </div>
 
       <!-- Collection Grid -->
@@ -83,26 +84,29 @@
       <div class="modal-color-bar" id="modal-color-bar"></div>
       <div class="modal-body">
 
-        <!-- Left: Image -->
+        <!-- Left: Gallery -->
         <div class="modal-image-section">
-          <div class="modal-image-wrap" id="modal-image-wrap">
-            <img id="modal-img" src="" alt="" style="display:none">
-            <div class="modal-img-placeholder" id="modal-img-placeholder">
+          <div id="gallery-main">
+            <img id="gallery-img" src="" alt="" style="display:none">
+            <video id="gallery-video" controls playsinline style="display:none"></video>
+            <div id="gallery-placeholder" style="display:flex">
               <span class="icon">📿</span>
               <span class="lbl">Görsel eklenmemiş</span>
             </div>
           </div>
-          <div class="modal-image-actions">
-            <button class="btn-upload" id="btn-upload" style="display:none">📷 Görsel Ekle</button>
-            <button class="btn-remove-img" id="btn-remove-img" style="display:none">Kaldır</button>
+          <div id="gallery-thumbs"></div>
+          <div id="gallery-actions">
+            <button id="gallery-upload-btn" style="display:none">Yükle</button>
           </div>
-          <input type="file" id="image-input" accept="image/*" hidden>
+          <input type="file" id="image-input" accept="image/*" multiple hidden>
+          <input type="file" id="video-input" accept="video/*" hidden>
         </div>
 
         <!-- Right: Details -->
         <div class="modal-details-section">
           <div id="modal-header"></div>
           <table class="details-table" id="details-table"></table>
+          <button class="modal-delete-btn" id="modal-delete-btn" style="display:none">🗑 Tespih Sil</button>
         </div>
 
       </div>
@@ -127,20 +131,88 @@
 
         <button class="auth-submit-btn" id="auth-submit-btn">Giriş Yap</button>
 
-        <!-- Change password (visible when logged in) -->
-        <div class="change-pw-section" id="change-pw-section" style="display:none">
-          <div class="change-pw-divider">Şifre Değiştir</div>
-          <div class="auth-field">
-            <input type="password" id="change-old-pw" placeholder="Mevcut şifre">
-            <button class="toggle-pw" type="button">👁</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Add Rosary Modal ───────────────────────────── -->
+  <div class="modal-overlay" id="add-rosary-overlay">
+    <div class="modal add-rosary-modal">
+      <button class="modal-close" id="add-rosary-close" aria-label="Kapat">✕</button>
+      <div class="add-rosary-body">
+        <h2 class="add-rosary-title">Yeni Tespih Ekle</h2>
+        <form id="add-rosary-form" autocomplete="off">
+          <div class="form-row">
+            <div class="form-field form-field-grow">
+              <label>Usta / Atölye *</label>
+              <input type="text" id="f-maker" placeholder="Usta adı" required>
+            </div>
+            <div class="form-field">
+              <label>Tür</label>
+              <select id="f-ua"><option value="U">Usta</option><option value="A">Atölye</option></select>
+            </div>
           </div>
-          <div class="auth-field">
-            <input type="password" id="change-new-pw" placeholder="Yeni şifre (min. 6 karakter)">
-            <button class="toggle-pw" type="button">👁</button>
+          <div class="form-row">
+            <div class="form-field form-field-grow">
+              <label>Hammadde *</label>
+              <input type="text" id="f-material" placeholder="ör. Kehribar" required>
+            </div>
+            <div class="form-field">
+              <label>Renk</label>
+              <input type="text" id="f-color" placeholder="ör. Damla">
+            </div>
           </div>
-          <p class="auth-error" id="change-pw-error"></p>
-          <button class="change-pw-btn" id="change-pw-btn">Şifreyi Güncelle</button>
-        </div>
+          <div class="form-row">
+            <div class="form-field form-field-grow">
+              <label>Şekil *</label>
+              <input type="text" id="f-shape" placeholder="ör. Yuvarlak" required>
+            </div>
+            <div class="form-field">
+              <label>Tane Sayısı *</label>
+              <input type="number" id="f-count" placeholder="99" min="1" required>
+            </div>
+            <div class="form-field">
+              <label>Tür</label>
+              <select id="f-style"><option value="D">Düz</option><option value="S">Süslü</option></select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>En (mm)</label>
+              <input type="number" id="f-width" placeholder="12" step="0.1">
+            </div>
+            <div class="form-field">
+              <label>Boy (mm)</label>
+              <input type="number" id="f-length" placeholder="15" step="0.1">
+            </div>
+            <div class="form-field">
+              <label>Ağırlık (g)</label>
+              <input type="number" id="f-weight" placeholder="45" step="0.1">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field">
+              <label>Değer (₺)</label>
+              <input type="number" id="f-valueTRY" placeholder="0" min="0">
+            </div>
+            <div class="form-field">
+              <label>Değer (€)</label>
+              <input type="number" id="f-valueEUR" placeholder="0" min="0" step="0.01">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field form-field-grow">
+              <label>Satıcı</label>
+              <input type="text" id="f-seller" placeholder="ör. Kapalıçarşı">
+            </div>
+            <div class="form-field">
+              <label>Tarih</label>
+              <input type="date" id="f-date">
+            </div>
+          </div>
+          <p class="add-rosary-error" id="add-rosary-error"></p>
+          <button type="submit" class="add-rosary-submit" id="add-rosary-submit">Ekle</button>
+        </form>
       </div>
     </div>
   </div>
