@@ -53,6 +53,24 @@
       "dateSerial": 46089,
       "seller": "Timsah Tesbih",
       "id": "c_1773394878155"
+    },
+    {
+      "maker": "Mücahit Şener",
+      "material": "Kuka",
+      "shape": "Kapsül",
+      "count": 33,
+      "ua": "U",
+      "style": "D",
+      "color": "Kahve",
+      "width": 8,
+      "length": 12,
+      "weight": null,
+      "density": null,
+      "valueTRY": 1500,
+      "valueEUR": 30,
+      "dateSerial": 46083,
+      "seller": "Utku Turhan",
+      "id": "c_1773398301187"
     }
   ],
   "archived": [
