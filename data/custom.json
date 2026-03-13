@@ -72,6 +72,24 @@
       "dateSerial": 46083,
       "seller": "Utku Turhan",
       "id": "c_1773398301187"
+    },
+    {
+      "maker": "Abdullah Darabacı",
+      "material": "Katalin",
+      "shape": "Kapsül",
+      "count": 33,
+      "ua": "A",
+      "style": "D",
+      "color": "Bej",
+      "width": 8,
+      "length": 12,
+      "weight": 27,
+      "density": 2.03,
+      "valueTRY": 900,
+      "valueEUR": 18,
+      "dateSerial": 46091,
+      "seller": "koleksiyon12345",
+      "id": "c_1773412920670"
     }
   ],
   "archived": [
