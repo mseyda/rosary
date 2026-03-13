@@ -339,12 +339,12 @@
   },
   "34": {
     "images": [
-      null,
+      "https://raw.githubusercontent.com/mseyda/rosary/master/images/34_5.jpg",
       "https://raw.githubusercontent.com/mseyda/rosary/master/images/34_1.jpg",
       "https://raw.githubusercontent.com/mseyda/rosary/master/images/34_2.jpg",
       "https://raw.githubusercontent.com/mseyda/rosary/master/images/34_3.jpg",
       "https://raw.githubusercontent.com/mseyda/rosary/master/images/34_4.jpg",
-      "https://raw.githubusercontent.com/mseyda/rosary/master/images/34_5.jpg"
+      null
     ],
     "video": null
   },
