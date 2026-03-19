@@ -108,6 +108,24 @@
       "dateSerial": 46091,
       "seller": "Koleksiyon12345",
       "id": "c_1773413053048"
+    },
+    {
+      "maker": "Anonim",
+      "material": "Katalim",
+      "shape": "Kapsül",
+      "count": 33,
+      "ua": "U",
+      "style": "D",
+      "color": "Turuncu",
+      "width": 8.5,
+      "length": 11.5,
+      "weight": null,
+      "density": null,
+      "valueTRY": 178,
+      "valueEUR": 3.5,
+      "dateSerial": 45999,
+      "seller": "jutmerve",
+      "id": "c_1773898652970"
     }
   ],
   "archived": [
