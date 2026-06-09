@@ -216,6 +216,24 @@
       "dateSerial": 46170,
       "seller": "Aysima",
       "id": "c_1780993345190"
+    },
+    {
+      "maker": "Anonim",
+      "material": "Kuka",
+      "shape": "Küre",
+      "count": 99,
+      "ua": "A",
+      "style": "D",
+      "color": "Kahverengi",
+      "width": 7,
+      "length": 7,
+      "weight": 30,
+      "density": 1.69,
+      "valueTRY": 270,
+      "valueEUR": 5,
+      "dateSerial": 46170,
+      "seller": "Aysima",
+      "id": "c_1780993431931"
     }
   ],
   "archived": [
