@@ -198,6 +198,24 @@
       "dateSerial": null,
       "seller": "Suat Başar",
       "id": "c_1780993190364"
+    },
+    {
+      "maker": "Dalgıç Usta",
+      "material": "Kuka",
+      "shape": "Beyzi",
+      "count": 33,
+      "ua": "A",
+      "style": "D",
+      "color": "Kahverengi",
+      "width": 9,
+      "length": 12,
+      "weight": 25,
+      "density": 1.49,
+      "valueTRY": 560,
+      "valueEUR": 10,
+      "dateSerial": 46170,
+      "seller": "Aysima",
+      "id": "c_1780993345190"
     }
   ],
   "archived": [
